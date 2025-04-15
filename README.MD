@@ -16,7 +16,7 @@ docker-compose up --build
 Основные команды:
 
 Создать супер пользователя:
-docker-compose exec python manage.py createsuperuserh
+docker-compose exec python manage.py createsuperuser
 
 Структура
 
