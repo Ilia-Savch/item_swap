@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="text-center mb-5">
+  <h2 class="fw-bold">Объявления</h2>
+  <p class="text-muted">Найдите интересное объявление или предложите обмен</p>
+</div>
+
+
+<form method="get" class="mb-4">
+  <div class="row g-2 justify-content-center">
+    <div class="col-md-3">
+      <input type="text" name="q" value="{{ q }}" class="form-control" placeholder="Поиск по названию или описанию">
+    </div>
+    <div class="col-md-3">
+      <select name="category" class="form-select">
+        <option value="">Все категории</option>
+        {% for c in categories %}
+          <option value="{{ c.name }}" {% if selected_category == c.name %}selected{% endif %}>{{ c.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-md-3">
+      <select name="condition" class="form-select">
+        <option value="">Любое состояние</option>
+        <option value="new" {% if selected_condition == "new" %}selected{% endif %}>Новая</option>
+        <option value="like_new" {% if selected_condition == "like_new" %}selected{% endif %}>Почти как новая</option>
+        <option value="used" {% if selected_condition == "used" %}selected{% endif %}>Б/у</option>
+        <option value="poor" {% if selected_condition == "poor" %}selected{% endif %}>Сильно поношенная</option>
+        <option value="broken" {% if selected_condition == "broken" %}selected{% endif %}>Сломанная (на запчасти)</option>
+      </select>
+    </div>
+    
+    <div class="col-md-2">
+      <button type="submit" class="btn btn-outline-primary w-100">🔍 Найти</button>
+    </div>
+  </div>
+</form>
+
+
+<div class="d-flex justify-content-center gap-3 mb-4 flex-wrap">
+  <a href="{% url 'ads:ad_create' %}" class="btn btn-primary">➕ Создать объявление</a>
+  <a href="{% url 'ads:exchange_proposal_create' %}" class="btn btn-success">🔁 Создать предложение обмена</a>
+  <a href="{% url 'ads:incoming_proposals' %}" class="btn btn-outline-primary">📥 Входящие предложения</a>
+  <a href="{% url 'ads:outgoing_proposals' %}" class="btn btn-outline-secondary">📤 Исходящие предложения</a>
+</div>
+
+<div class="card shadow-sm mb-4">
+  <ul class="list-group list-group-flush">
+    {% for ad in ads %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <a href="{% url 'ads:ad_detail' ad.pk %}" class="text-decoration-none">{{ ad.title }}</a>
+        <span class="badge bg-light text-muted">{{ ad.created_at|date:"d.m.Y" }}</span>
+      </li>
+    {% empty %}
+      <li class="list-group-item text-muted text-center">Пока нет объявлений</li>
+    {% endfor %}
+  </ul>
+</div>
+
+{% if ads.has_other_pages %}
+  <nav class="pagination-nav">
+    <ul class="pagination justify-content-center">
+      {% for p in ads.paginator.page_range %}
+        <li class="page-item {% if p == ads.number %}active{% endif %}">
+          <a href="?{% if q %}q={{ q }}&{% endif %}{% if selected_category %}category={{ selected_category }}&{% endif %}{% if selected_condition %}condition={{ selected_condition }}&{% endif %}page={{ p }}" class="page-link">{{ p }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  </nav>
+{% endif %}
+{% endblock %}
+

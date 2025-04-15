@@ -1,0 +1,39 @@
+{% extends "base.html" %} {% block content %}
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h2 class="card-title mb-4">Изменить статус предложения обмена</h2>
+
+    <form method="post">
+      {% csrf_token %} {% for field in form %}
+      <div class="mb-3">
+        <label for="{{ field.id_for_label }}" class="form-label">
+          {{ field.label }}
+        </label>
+        {{ field }} {% if field.help_text %}
+        <div class="form-text">{{ field.help_text }}</div>
+        {% endif %} {% for error in field.errors %}
+        <div class="text-danger small">{{ error }}</div>
+        {% endfor %}
+      </div>
+      {% endfor %}
+
+      <button type="submit" class="btn btn-primary w-100">
+        💾 Сохранить изменения
+      </button>
+    </form>
+  </div>
+</div>
+
+<div class="d-flex justify-content-center gap-3 my-4">
+  <a href="{% url 'ads:incoming_proposals' %}" class="btn btn-outline-primary">
+    Входящие предложения
+  </a>
+  <a
+    href="{% url 'ads:outgoing_proposals' %}"
+    class="btn btn-outline-secondary"
+  >
+    Исходящие предложения
+  </a>
+</div>
+
+{% endblock %}

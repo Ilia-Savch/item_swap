@@ -1,0 +1,39 @@
+services:
+  item_swap:
+    build:
+      context: .
+    container_name: item_swap
+    ports:
+      - "8001:8001"
+    depends_on:
+      - postgres
+      - redis
+    env_file:
+      - ./.env
+    volumes:
+      - .:/app
+
+  postgres:
+    image: postgres:16.3
+    container_name: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - ./.env
+    ports:
+      - "5432:5432"
+  redis:
+    image: redis:7.4
+    container_name: redis
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning
+    volumes:
+      - redis_data:/data
+    env_file:
+      - ./.env
+
+volumes:
+  postgres_data:
+  redis_data:

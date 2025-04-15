@@ -1,0 +1,18 @@
+{% extends "base.html" %} {% block content %}
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h2 class="card-title mb-4">Создание новой категории</h2>
+
+    <form method="post">
+      {% csrf_token %} {{ form.as_p }}
+      <button type="submit" class="btn btn-primary mt-3">
+        Создать категорию
+      </button>
+    </form>
+  </div>
+</div>
+
+<a href="{% url 'ads:ad_create' %}" class="btn btn-link mt-3"
+  >← Назад к созданию</a
+>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "base.html" %} {% block content %}
+<div
+  style="
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 30px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  "
+>
+  <h2 style="margin-bottom: 20px">Удалить объявление</h2>
+  <p style="margin-bottom: 30px; font-size: 18px">
+    Вы действительно хотите удалить <strong>«{{ object.title }}»</strong>?
+  </p>
+
+  <form method="post" style="display: flex; justify-content: center; gap: 10px">
+    {% csrf_token %}
+    <button
+      type="submit"
+      style="
+        background-color: #d9534f;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      "
+    >
+      Да, удалить
+    </button>
+    <a
+      href="{% url 'ads:ad_list' %}"
+      style="
+        background-color: #6c757d;
+        color: white;
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 4px;
+        display: inline-block;
+      "
+    >
+      Отмена
+    </a>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "base.html" %} {% block content %}
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h2 class="card-title mb-4">
+      {{ form.instance.pk|yesno:"Редактировать,Создать" }} объявление
+    </h2>
+
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %} {{ form.as_p }}
+      <button type="submit" class="btn btn-primary mt-3">💾 Сохранить</button>
+    </form>
+  </div>
+</div>
+
+<div class="d-flex justify-content-between mt-4">
+  <a href="{% url 'ads:ad_list' %}" class="btn btn-outline-secondary">
+    ← Назад к объявлениям
+  </a>
+  <a href="{% url 'ads:category_create' %}" class="btn btn-outline-success">
+    ➕ Создать категорию
+  </a>
+</div>
+
+{% endblock %}

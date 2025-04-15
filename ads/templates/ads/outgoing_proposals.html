@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <h2 class="card-title mb-4">Исходящие предложения</h2>
+
+      <!-- Форма фильтрации -->
+      <form method="get" class="mb-4">
+        <div class="row g-2">
+          <div class="col-md-3">
+            <label for="status" class="form-label">Статус</label>
+            <select name="status" id="status" class="form-select">
+              <option value="">Все статусы</option>
+              <option value="pending" {% if request.GET.status == "pending" %}selected{% endif %}>В ожидании</option>
+              <option value="accepted" {% if request.GET.status == "accepted" %}selected{% endif %}>Принято</option>
+              <option value="rejected" {% if request.GET.status == "rejected" %}selected{% endif %}>Отклонено</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <button type="submit" class="btn btn-primary mt-4">Фильтровать</button>
+          </div>
+        </div>
+      </form>
+
+      <!-- Список предложений -->
+      <ul class="list-group">
+        {% for proposal in proposals %}
+          <li class="list-group-item mb-3 shadow-sm">
+            <strong>Вы предложили: </strong>{{ proposal.ad_sender.title }}<br />
+            <strong>Взамен на: </strong>{{ proposal.ad_receiver.title }}<br />
+            <strong>Комментарий:</strong> {{ proposal.comment }}<br />
+            <strong>Текущий статус:</strong> {{ proposal.get_status_display }}<br />
+          </li>
+        {% empty %}
+          <li class="list-group-item text-center text-muted">
+            Вы ещё не сделали ни одного предложения.
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-center mt-4">
+    <a href="{% url 'ads:ad_list' %}" class="btn btn-link">
+      <i class="bi bi-arrow-left-circle"></i> Назад
+    </a>
+  </div>
+
+{% endblock %}
+
